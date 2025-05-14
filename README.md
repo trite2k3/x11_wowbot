@@ -5,6 +5,7 @@ Hardcoded for my druid, you have to remake it with your keybindings and whatnot
 
 Be aware, you will be banned for using this.
 
+made with ChatGPT \o/
 
 # Howto
 
