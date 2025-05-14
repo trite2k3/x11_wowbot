@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: Coordlor
+## Notes: custom addon
+## Author: Trite
+## Version: 1.0
+## Dependencies: pfQuest
+
+Coordlor.lua
