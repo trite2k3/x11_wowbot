@@ -11,11 +11,13 @@ made with ChatGPT \o/
 
 change code to match your bindings and class (combat rotation mostly)
 
+change loot(display, 2560, 1440); to match your resolution
+
 install Coordlor_addon in interface/addons wow dir
 
 build with ./build.sh
 
-run record_coords and press "9" for each waypoint in the path you want to save
+run record_coords and press "9" for each waypoint in the path you want to save and copy paste it into the read_coords.cpp and rebuild
 
 run read_coords
 
