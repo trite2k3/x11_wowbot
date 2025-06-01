@@ -19,12 +19,11 @@ using TimePoint = Clock::time_point;
 
 static TimePoint steerPauseUntil = Clock::now();
 
-TimePoint lastQ         = Clock::now() - std::chrono::minutes(16);
+TimePoint lastQ         = Clock::now() - std::chrono::minutes(31);
 TimePoint lastE         = Clock::now() - std::chrono::minutes(11);
 TimePoint lastClearTime = Clock::now() - std::chrono::seconds(6);
 TimePoint lastHealTime  = Clock::now() - std::chrono::seconds(16);
 TimePoint lastInnervate = Clock::now() - std::chrono::minutes(7);
-TimePoint lastSeal = Clock::now() - std::chrono::seconds(25);
 
 bool isTurningLeft = false;
 bool isTurningRight = false;
@@ -36,9 +35,7 @@ const int Y_BOX_OFFSET = 17;          // boxAggro: baseX+90, baseY
 const int COMBAT_BOX_OFFSET = 33;
 const int HP_BOX_OFFSET = 50;
 const int TARGET_BOX_OFFSET = 67;
-/*
 const int CAT_BOX_OFFSET = 84;
-*/
 const int MANA_BOX_OFFSET = 84;
 const int FACING_BOX_OFFSET = 118;
 const int POSITION_BOX_OFFSET = 135;
@@ -61,263 +58,63 @@ struct Point {
     float x, y;
 };
 
-/* PATH loch modan
+/* Searing Gorge flame spiders NEW */
 std::vector<Point> path = {
-    {71.3726, 39.2157},
-    {71.3726, 40.3922},
-    {72.1569, 42.3529},
-    {73.3333, 43.1373},
-    {72.9412, 44.7059},
-    {74.1176, 45.4902},
-    {74.5098, 44.3137},
-    {76.0784, 44.3137},
-    {76.4706, 43.1373},
-    {76.0784, 41.5686},
-    {78.0392, 41.9608},
-    {77.6471, 40},
-    {76.8627, 38.4314},
-    {76.4706, 37.6471},
-    {76.8627, 36.0784},
-    {78.0392, 36.4706},
-    {77.2549, 34.902},
-    {77.6471, 33.7255},
-    {76.4706, 34.5098},
-    {75.6863, 36.0784},
-    {76.0784, 38.4314},
-    {74.1176, 37.6471},
-    {74.902, 36.4706},
-    {74.1176, 34.5098},
-    {72.9412, 36.0784},
-    {72.549, 36.0784},
-    {71.7647, 36.8627},
-    {71.3726, 37.6471},
-    {72.549, 38.0392},
-    {71.3726, 40.3922},
-    {72.1569, 41.1765},
-    {71.7647, 41.9608},
-    {72.9412, 42.7451},
-    {72.9412, 40.7843},
+    {59.2157, 72.549},
+    {57.6471, 71.7647},
+    {56.4706, 72.9412},
+    {53.7255, 73.3333},
+    {52.1569, 72.1569},
+    {50.1961, 73.7255},
+    {49.8039, 72.9412},
+    {48.6275, 73.7255},
+    {48.2353, 72.1569},
+    {47.8431, 70.1961},
+    {49.4118, 65.8824},
+    {46.6667, 61.9608},
+    {51.7647, 61.5686},
+    {52.1569, 64.3137},
+    {56.4706, 65.4902},
+    {55.2941, 66.2745},
+    {53.7255, 70.5882},
+    {56.0784, 69.0196},
+    {56.8627, 69.8039},
+    {57.6471, 70.9804},
 };
 
-*/
 
-/* Marsh
-std::vector<Point> path = {
-    {20.7843, 20.3922},
-    {21.5686, 20},
-    {22.3529, 21.1765},
-    {25.098, 20.7843},
-    {27.0588, 19.2157},
-    {29.0196, 17.6471},
-    {30.1961, 16.8627},
-    {31.3726, 16.0784},
-    {32.549, 15.6863},
-    {32.9412, 18.4314},
-    {32.1569, 20},
-    {30.5882, 19.2157},
-    {29.8039, 18.8235},
-    {29.0196, 20.7843},
-    {25.8824, 22.7451},
-    {24.7059, 23.5294},
-    {23.1373, 23.9216},
-    {22.3529, 24.3137},
-    {21.5686, 25.8824},
-    {20.3922, 23.9216},
-    {18.8235, 24.7059},
-    {17.2549, 23.9216},
-};
-
-*/
-
-/* arathi
-
-std::vector<Point> path = {
-    {41.1765, 70.5882},
-    {40.7843, 69.4118},
-    {41.1765, 67.8431},
-    {40.7843, 66.6667},
-    {41.5686, 65.098},
-    {40.3922, 64.7059},
-    {39.2157, 64.7059},
-    {38.0392, 66.2745},
-    {38.4314, 67.451},
-    {38.8235, 68.6275},
-    {38.4314, 69.8039},
-    {38.8235, 70.1961},
-    {39.2157, 70.9804},
-    {40, 70.9804},
-    {40.7843, 70.9804},
-    {40.7843, 69.8039},
-    {40, 68.2353},
-    {39.2157, 66.2745},
-    {39.6078, 65.098},
-    {40.3922, 66.6667},
-    {40.3922, 67.8431},
-
-};
-*/
-
-/*
- stv monke
-
-std::vector<Point> path = {
-    {36.4706, 16.4706},
-    {36.4706, 16.8627},
-    {36.8627, 16.4706},
-    {37.2549, 18.0392},
-    {37.2549, 18.4314},
-    {37.2549, 18.8235},
-    {37.6471, 18.8235},
-    {37.6471, 18.4314},
-    {38.0392, 18.8235},
-    {38.8235, 18.4314},
-    {39.2157, 17.6471},
-    {38.8235, 17.6471},
-    {38.8235, 17.2549},
-    {38.8235, 16.8627},
-    {38.8235, 16.0784},
-    {38.4314, 15.2941},
-    {38.0392, 15.6863},
-    {37.6471, 16.8627},
-    {37.2549, 16.0784},
-    {36.8627, 16.4706},
-};
-*/
-
-/* stv tigers
-
-std::vector<Point> path = {
-    {36.4706, 34.902},
-    {36.0784, 36.0784},
-    {35.2941, 36.0784},
-    {34.902, 36.8627},
-    {34.902, 37.2549},
-    {34.5098, 37.6471},
-    {34.902, 38.8235},
-    {35.6863, 38.0392},
-    {35.6863, 38.4314},
-    {36.0784, 38.4314},
-    {35.2941, 38.8235},
-    {35.2941, 39.6078},
-    {35.2941, 40},
-    {35.6863, 40.7843},
-    {35.6863, 41.1765},
-    {35.6863, 41.9608},
-    {35.2941, 43.5294},
-    {35.6863, 43.5294},
-    {35.6863, 43.5294},
-    {36.0784, 43.9216},
-    {36.0784, 43.5294},
-    {36.4706, 43.9216},
-    {36.8627, 43.9216},
-    {37.2549, 44.3137},
-    {37.2549, 43.1373},
-    {37.6471, 42.7451},
-    {37.6471, 41.5686},
-    {37.6471, 40.3922},
-    {37.6471, 40},
-    {38.0392, 39.6078},
-    {38.0392, 39.2157},
-    {38.8235, 38.8235},
-    {38.8235, 38.4314},
-    {38.8235, 36.8627},
-    {38.0392, 36.8627},
-    {38.0392, 36.4706},
-    {37.6471, 36.4706},
-    {37.2549, 36.0784},
-    {37.2549, 35.2941},
-    {36.8627, 34.902},
-    {36.4706, 34.902},
-    {36.0784, 34.902},
-};
-*/
-
-/*
- Feralas apes
-
-std::vector<Point> path = {
-    {56.4706, 59.2157},
-    {56.4706, 60},
-    {57.2549, 60},
-    {58.0392, 60.3922},
-    {57.2549, 61.1765},
-    {58.0392, 60.7843},
-    {58.4314, 60.3922},
-    {58.8235, 61.9608},
-    {58.8235, 60.3922},
-    {59.2157, 60.3922},
-    {59.6078, 60.7843},
-    {59.6078, 60},
-    {58.8235, 59.6078},
-    {59.2157, 59.2157},
-    {59.2157, 58.8235},
-    {58.4314, 58.8235},
-    {57.6471, 58.4314},
-    {57.2549, 58.4314},
-    {56.8627, 58.0392},
-    {56.4706, 58.8235},
-};
-*/
-
-/*
- STV Hyena
+/* azshara
 
 
 std::vector<Point> path = {
-    {62.3529, 61.1765},
-    {61.5686, 60.3922},
-    {61.1765, 60.7843},
-    {60.7843, 60.3922},
-    {60.3922, 61.1765},
-    {60, 60.3922},
-    {59.6078, 60.3922},
-    {58.4314, 61.5686},
-    {57.6471, 60},
-    {58.0392, 58.8235},
-    {58.8235, 58.8235},
-    {58.8235, 57.2549},
-    {59.6078, 55.6863},
-    {60.7843, 56.4706},
-    {60.7843, 54.5098},
-    {61.5686, 54.5098},
-    {61.9608, 56.0784},
-    {62.7451, 55.6863},
-    {63.1373, 56.0784},
-    {63.9216, 56.0784},
-    {63.9216, 57.2549},
-    {63.9216, 59.2157},
-    {63.1373, 60.3922},
+    {43.9216, 49.4118},
+    {43.9216, 47.8431},
+    {44.3137, 49.0196},
+    {45.098, 49.0196},
+    {45.4902, 47.451},
+    {45.8824, 47.451},
+    {46.2745, 47.0588},
+    {46.2745, 45.098},
+    {45.4902, 43.9216},
+    {46.2745, 42.7451},
+    {47.451, 42.7451},
+    {46.2745, 44.7059},
+    {46.2745, 47.0588},
+    {47.0588, 46.6667},
+    {47.451, 47.0588},
+    {47.0588, 47.8431},
+    {47.0588, 48.6275},
+    {47.451, 49.0196},
+    {47.0588, 49.4118},
+    {47.0588, 49.8039},
+    {45.8824, 49.8039},
+    {45.4902, 50.1961},
+    {44.7059, 49.0196},
+    {44.3137, 49.8039},
+    {43.9216, 49.4118},
 };
 */
 
-/*
- Feralas Bears
-*/
-std::vector<Point> path = {
-    {51.3726, 33.3333},
-    {50.5882, 32.549},
-    {50.1961, 31.7647},
-    {50.5882, 30.9804},
-    {50.1961, 29.8039},
-    {50.5882, 29.4118},
-    {50.5882, 29.0196},
-    {50.5882, 28.2353},
-    {50.1961, 27.8431},
-    {50.1961, 27.8431},
-    {49.8039, 28.2353},
-    {50.1961, 29.0196},
-    {49.4118, 28.2353},
-    {49.8039, 29.8039},
-    {49.4118, 30.9804},
-    {49.4118, 31.3726},
-    {50.1961, 32.1569},
-    {49.8039, 31.7647},
-    {49.0196, 32.1569},
-    {49.4118, 33.3333},
-    {49.8039, 34.1176},
-    {50.1961, 32.9412},
-    {50.5882, 32.549},
-};
 
 RGB get_pixel_color(Display* display, int x, int y) {
     Window root = DefaultRootWindow(display);
@@ -487,14 +284,11 @@ void right_click(Display* display, int x, int y) {
 // Wait long enough for the Global‑Cool‑Down to finish
 inline void waitForGCD() { usleep(1600 * 1000); }   // 1.6 s
 
-/*
 // Call every time you are about to decide on a form
 inline RGB refreshCatBox(Display* d) {
     return get_pixel_color(d, baseX + CAT_BOX_OFFSET, baseY);
 }
-*/
 
-/*
 void ensure_form(Display* display, RGB catBox, bool wantCatForm) {
     bool inCatForm = catBox.b > 200;
 
@@ -505,7 +299,6 @@ void ensure_form(Display* display, RGB catBox, bool wantCatForm) {
         waitForGCD();
     }
 }
-*/
 
 void ensure_targeting_player(Display* display)
 {
@@ -546,100 +339,67 @@ void tryCastInnervate(Display* display) {
 
     if (minutesSinceLastInnervate >= 7.0f) {
         std::cout << "Casting Innervate.\n";
-        /*
         ensure_form(display, refreshCatBox(display), false);
-        */
         waitForGCD();
         press_key(display, XK_R, true, 210);
         waitForGCD();
-        /*
         ensure_form(display, refreshCatBox(display), true);
-        */
         waitForGCD();
         lastInnervate = now;
     }
 }
 
-/*
 void buff(Display* display, RGB catBox)
-*/
-void buff(Display* display)
 {
     auto now = Clock::now();
 
-    if (now - lastQ >= 15min) {            // Alt‑Q
+    if (now - lastQ >= 30min) {            // Alt‑Q
         press_combo(display, XK_Alt_L, XK_Q);
         waitForGCD();
         lastQ = now;
     }
 
+    if (now - lastE >= 10min) {            // Alt‑E
+        ensure_form(display, refreshCatBox(display), false);  // always re‑sample!
+        press_combo(display, XK_Alt_L, XK_E);
+        waitForGCD();
+        lastE = now;
+    }
     /* now go back to Cat */
     RGB manaBox = get_pixel_color(display, baseX + MANA_BOX_OFFSET, baseY);
     float manaPercent = decode_component(manaBox.b);
     if (manaPercent < 15.0f) {
         tryCastInnervate(display);
     }
-    /*
     ensure_form(display, refreshCatBox(display), true);
-    */
 }
 
-void seal(Display* display) {
-    auto now = steady_clock::now();
-    float secondsSinceSeal = duration<float>(now - lastSeal).count();
-    if (secondsSinceSeal >= 27.0f) {
-        press_key(display, XK_1, true, 250);
-        press_key(display, XK_3, true, 250);
-        waitForGCD();
-        lastSeal = now;  // cooldown reset
-    }
-
-}
-
-/*
 void heal_if_needed(Display* display, float hpPercent, RGB catBox) {
-*/
-void heal_if_needed(Display* display, float hpPercent) {
     auto now = steady_clock::now();
     float secondsSinceLastHeal = duration<float>(now - lastHealTime).count();
 
-    if (hpPercent < 20.0) {
-        waitForGCD();
-        press_key(display, XK_F, true, 200);
-        waitForGCD();
-    }
-
-    if (hpPercent < 60.0 && secondsSinceLastHeal >= 14.0f) {
+    if (hpPercent < 60.0 && secondsSinceLastHeal >= 16.0f) {
         RGB manaBox = get_pixel_color(display, baseX + MANA_BOX_OFFSET, baseY);
         float manaPercent = decode_component(manaBox.b);
 
         if (manaPercent > 15.0f) {
             release_all(display);
             isHealing = true;                         // ← keep
-            /*
             ensure_form(display, refreshCatBox(display), false);   // will now run
-            */
             /* new spec different keybindings
             press_combo(display, XK_Shift_L, XK_F);   // Rejuvenation
             waitForGCD();
             sleep(2);
             press_combo(display, XK_Shift_L, XK_E);   // Regrowth
             */
+            press_key(display, XK_Q, true, 200);    // Rejuvenation
             waitForGCD();
-            press_key(display, XK_Q, true, 200);    // Holy Light
-            waitForGCD();
-            sleep(3);
-            /*
             sleep(2);
             press_key(display, XK_E, true, 200);    // Regrowth
             waitForGCD();
-            */
 
             isHealing = false;                        // **moved up**
-            /*
             buff(display, refreshCatBox(display));    // buffs + re‑enter Cat Form
-            */
-            buff(display);    // buffs + re‑enter Cat Form
             lastHealTime = now;  // cooldown reset
         } else {
             std::cout << "Not enough mana to heal (" << manaPercent << "%)\n";
@@ -648,10 +408,8 @@ void heal_if_needed(Display* display, float hpPercent) {
     }
 }
 
-/*
+
 bool combat_routine(Display* display, int combatPixelX, int combatPixelY, RGB catBox) {
-*/
-bool combat_routine(Display* display, int combatPixelX, int combatPixelY) {
     int maxCombatDuration = 30;
     int attackCount = 0;
 
@@ -668,25 +426,23 @@ bool combat_routine(Display* display, int combatPixelX, int combatPixelY) {
             }
         }
 
-        /*
         ensure_form(display, refreshCatBox(display), true);
-        */
-
-        seal(display);
 
         std::cout << "Attacking with 4...\n";
         press_key(display, XK_4, true, 200);
         usleep(200000);
-        press_combo(display, XK_Shift_L, XK_space);
+        press_key(display, XK_4, true, 200);
         usleep(200000);
-        //press_key(display, XK_2, true, 200);
-        //usleep(200000);
+        press_key(display, XK_4, true, 200);
+        usleep(200000);
 
         ensure_targeting_player(display);
 
         if (is_positioning_error(display, baseX + POSITION_BOX_OFFSET, baseY)) {
             std::cout << "Positioning error detected (Too Far or Not Facing)!\n";
-            press_key(display, XK_Down, true, 700);
+            press_key(display, XK_Down, true, 1000);
+            sleep(1);
+            press_key(display, XK_Down, true, 400);
         }
 
         attackCount++;
@@ -702,13 +458,8 @@ bool combat_routine(Display* display, int combatPixelX, int combatPixelY) {
 
         RGB hpBox = get_pixel_color(display, baseX + HP_BOX_OFFSET, baseY);
         float hpPercent = decode_component(hpBox.b);
-        /*
         RGB catBox = get_pixel_color(display, baseX + CAT_BOX_OFFSET, baseY);
-        */
-        /*
         heal_if_needed(display, hpPercent, catBox);
-        */
-        heal_if_needed(display, hpPercent);
         clear_target_if_dead(display);
     }
 
@@ -720,7 +471,7 @@ void loot(Display* display, int screenWidth, int screenHeight) {
     std::cout << "Attempting to loot...\n";
     for (int i = 0; i < 5; ++i) {
         int x = screenWidth / 2 + (rand() % 150 - 70);
-        int y = screenHeight / 2 - 10 + (rand() % 100 - 60);
+        int y = screenHeight / 2 - 50 + (rand() % 80 - 40);
         right_click(display, x, y);
         usleep(300000);
     }
@@ -772,9 +523,7 @@ int main() {
                 RGB combatBox = get_pixel_color(display, baseX + COMBAT_BOX_OFFSET, baseY);
                 RGB hpBox = get_pixel_color(display, baseX + HP_BOX_OFFSET, baseY);
                 RGB targetBox = get_pixel_color(display, baseX + TARGET_BOX_OFFSET, baseY);
-                /*
                 RGB catBox = get_pixel_color(display, baseX + CAT_BOX_OFFSET, baseY);
-                */
                 RGB facingBox = get_pixel_color(display, baseX + FACING_BOX_OFFSET, baseY);
 
                 float xCoord = decode_component(xBox.r);
@@ -789,9 +538,7 @@ int main() {
 
                 std::cout << "Current: " << xCoord << "," << yCoord << " Target: " << waypoint.x << "," << waypoint.y << " HP: " << hpPercent << "% Combat: " << (inCombat ? "YES" : "NO") << std::endl;
 
-                /*
                 ensure_form(display, refreshCatBox(display), true);
-                */
                 clear_target_if_dead(display);
 
                 auto now = std::chrono::steady_clock::now();
@@ -806,10 +553,7 @@ int main() {
                             sleep(1);
                             press_key(display, XK_Down, true, 400);
                         }
-                    /*
                     bool combatEnded = combat_routine(display, baseX + COMBAT_BOX_OFFSET, baseY, catBox);
-                    */
-                    bool combatEnded = combat_routine(display, baseX + COMBAT_BOX_OFFSET, baseY);
                     if (combatEnded) {
                         usleep(500000);
                         RGB confirmCombatBox = get_pixel_color(display, baseX + COMBAT_BOX_OFFSET, baseY);
