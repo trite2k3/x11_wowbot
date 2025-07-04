@@ -22,7 +22,8 @@ local FLASH_TIME      = 1            -- seconds the UI‑error colour stays on
 local errorMappings = {
     ["too far away"] = "too far",
     ["in front"] = "not facing",
-    ["facing the"]   = "not facing", -- keep if correct for your locale
+    ["facing the"]   = "not facing",
+    ["of range"]   = "too far",
 }
 
 -- Lua 5.0 doesn’t ship “%” – helper wrapper
@@ -102,6 +103,7 @@ local boxMana       = CreateColorBox(frame, 60)
 local boxFacing     = CreateColorBox(frame, 70)
 local boxError      = CreateColorBox(frame, 80)
 local boxAggro      = CreateColorBox(frame, 90)
+local boxPet        = CreateColorBox(frame, 100)
 
 ---------------------------------------------------------------------
 --  UI‑error watcher (created once, never inside OnUpdate!)
@@ -189,7 +191,7 @@ frame:SetScript("OnUpdate", function(_, elapsed)
     if hasTarget then
         if not UnitExists("targettarget") then
             boxAggro:SetTexture(0, 1, 0)
-        elseif UnitIsUnit("targettarget", "player") then
+        elseif UnitIsUnit("targettarget", "player") or UnitIsUnit("targettarget", "pet") then
             boxAggro:SetTexture(1, 0, 0)
         else
             boxAggro:SetTexture(0.3, 0.3, 0.3)
@@ -227,6 +229,23 @@ frame:SetScript("OnUpdate", function(_, elapsed)
         boxError:SetTexture(0, 0, 0)
         recentError = nil
     end
+
+    ------------------------------------------------------------------
+    -- Pet status & HP (green = alive, red = low HP, gray = none)
+    local hasPet = UnitExists("pet")
+    if hasPet then
+        local petHP, petHPMax = UnitHealth("pet"), UnitHealthMax("pet")
+        local petHPPct = (petHPMax > 0) and (petHP / petHPMax) or 0
+
+        -- Green when healthy, red when low, blue if full HP
+        local r = (1 - petHPPct)
+        local g = petHPPct
+        boxPet:SetTexture(r, g, 0)
+    else
+        -- Black if no pet
+        boxPet:SetTexture(0.0, 0.0, 0.0)
+    end
+
 
     ------------------------------------------------------------------
     -- Combine & display multiline read‑out (only strings; no heavy ops)
